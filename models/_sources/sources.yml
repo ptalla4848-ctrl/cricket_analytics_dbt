@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: cricket_rawdata
+    database: cricket_analytics
+    schema: raw
+    tables:
+      - name: raw_data
+        config:
+          loaded_at_field: load_date
+          freshness:
+            warn_after:
+              count: 1
+              period: day
+            error_after:
+              count: 30
+              period: day
+      - name: players_info

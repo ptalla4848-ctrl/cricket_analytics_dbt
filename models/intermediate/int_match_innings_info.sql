@@ -20,13 +20,13 @@ select
 ,f1.value:runs.total::int as runs_total
 ,f1.value:wickets[0].kind::string as dismissal_kind
 ,f1.value:wickets[0].player_out::string as out_player
-,coalesce(ceil(f0.value:powerplays[0].from), start_over) as powerplays_start_over
-,coalesce(ceil(f0.value:powerplays[0].to),end_over) as powerplays_end_over
+,coalesce(ceil(f0.value:powerplays[0].from), sdp.start_over) as powerplays_start_over
+,coalesce(ceil(f0.value:powerplays[0].to), sdp.end_over) as powerplays_end_over
 , case when over between powerplays_start_over and powerplays_end_over then 1 else 0 end as is_powerplay
 ,src_file_name
 from stg_raw_data
 left join stg_dp sdp on raw_json:info.match_type::string = sdp.match_type
-,lateral flatten(raw_file:innings) f0
+,lateral flatten(raw_json:innings) f0
 ,lateral flatten(f0.value:overs) f
 ,lateral flatten(f.value:deliveries) f1
 
